@@ -23,6 +23,21 @@ evaluated at \(a\) and \(b\) of course.
     </item>
     
     <item>
+      <title>second2b</title>
+      <link>/2020/05/21/second2b/</link>
+      <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/05/21/second2b/</guid>
+      <description>Checking the environment \[\int_{a}^{b}\log x\,dx = x\log x - x\]
+evaluated at \(a\) and \(b\) of course.
+Whats new: args(seq) ## function (...) ## NULL Did it work?
+  Checking the environment \[\int_{a}^{b}\log x\,dx = x\log x - x\]
+evaluated at \(a\) and \(b\) of course.
+## Whats new: title: second2b author: Carlos C. Rodriguez date: ‘2020-05-21’ slug: second2b categories: [] tags: [] —
+  Checking the environment \[\int_{a}^{b}\log x\,dx = x\log x - x\]</description>
+    </item>
+    
+    <item>
       <title> My first Post</title>
       <link>/2020/05/18/my-first-post/</link>
       <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>

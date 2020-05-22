@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>A Hugo website</title>
+    <title>zeugirdoR&#39;s site</title>
     <link>/</link>
-    <description>Recent content on A Hugo website</description>
+    <description>Recent content on zeugirdoR&#39;s site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 05 May 2016 21:48:51 -0700</lastBuildDate>
@@ -72,7 +72,10 @@ evaluated at \(a\) and \(b\) of course.
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
       
       <guid>/about/</guid>
-      <description>This is a &amp;ldquo;hello world&amp;rdquo; example website for the blogdown package. The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
+      <description>This is a &amp;ldquo;hello world&amp;rdquo; example website for the blogdown package. The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.
+What&amp;rsquo;s in the image? That&amp;rsquo;s my (young) face behind probabilistic minimum action.
+Minimum Action? Yes. As in physics. But here $P$ and $Q$ are positive measures on the same measurable space with normalized (equal) total mass.
+I have been toiling around this since 1981. The latest development is close to:</description>
     </item>
     
     <item>

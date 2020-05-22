@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">covid19</h1>
@@ -70,11 +70,43 @@
       
 
 
-<div id="covid19-nyc-r_0" class="section level1">
-<h1>Covid19 NYC: <span class="math inline">\(R_{0}\)</span></h1>
-<p><a href="https://omega0.xyz/omega8008/"><img src="/images/urhere.png" alt="urhere.png" /></a></p>
-<hr />
-<p>Hi there…</p>
+<p><a href="https://omega0.xyz/omega8008/"><img src="/images/urhere.png" alt="urhere.png" /></a>
+# NYC: <span class="math inline">\(R_{0}\)</span></p>
+<p>We are after the <strong>Reproductive number</strong> <span class="math inline">\(R_{0}\)</span> for NYC.
+We want good reliable estimates given the available data.</p>
+<div id="first-a-quick-reminder-of-sir-model." class="section level3">
+<h3>First a quick reminder of SIR model.</h3>
+<p>The SIR epidemic model assumes a fix number <span class="math inline">\(N\)</span> of
+individuals are (at each time <span class="math inline">\(t\)</span>) divided into
+three groups <span class="math inline">\((S,I,R)\)</span> thus its name. Where <span class="math inline">\(S=S(t)\)</span>
+are the Susceptible individuals that are able to catch
+the virus, <span class="math inline">\(I=I(t)\)</span> are the Infectives able to transmit
+the virus, and <span class="math inline">\(R=R(t)\)</span> are the Removed individuals
+that either died or become immune to the virus.
+It is assumed that <span class="math inline">\(N=S+I+R\)</span> is constant for all <span class="math inline">\(t\)</span>
+and that the changes (<span class="math inline">\(\delta U = U(t+1)-U(t)\)</span>) satisfy</p>
+<span class="math display">\[\begin{aligned}
+  \delta S &amp;= -a S\cdot I\\
+  \delta I &amp;= a S\cdot I - b I\\
+  \delta R &amp;= b I
+\end{aligned}\]</span>
+<p>where <span class="math inline">\(a,b\)</span> are the parameters of the epidemic.
+These equations have a simple interpretation.
+The first one says that <span class="math inline">\(S\)</span> decreases proportional
+to the number <span class="math inline">\(SI\)</span> of matches of <span class="math inline">\(S\)</span>
+with <span class="math inline">\(I\)</span> individuals. The second says that <span class="math inline">\(I\)</span>
+increases by the same amount discounting for the <span class="math inline">\(R\)</span>
+that are removed at that time given by the third equation.
+The most important parameter of the epidemic is not <span class="math inline">\(a\)</span>
+or <span class="math inline">\(b\)</span> but their ratio: <span class="math inline">\(R_{0}= (a/b)S\)</span> known as the
+<em>reproductive number</em> or <span class="math inline">\(R_{0}\)</span> (read R-naught) made
+famous by the movie <em>Contagion</em>.
+The infection is exploding or dying out depending on
+<span class="math inline">\(R_{0}&gt;1\)</span> or <span class="math inline">\(R_{0}&lt;1\)</span> since the second equation says
+that <span class="math inline">\(I\)</span> is increasing (<span class="math inline">\(\delta I &gt;0\)</span>) or
+decreasing (<span class="math inline">\(\delta I &lt; 0\)</span>) depending on <span class="math inline">\(R_{0}\)</span>.</p>
+<p>Learn more about SIR.
+<strong>HINT</strong> Use the internet.</p>
 </div>
 
     </div>

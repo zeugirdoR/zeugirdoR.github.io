@@ -17,9 +17,9 @@
       <pubDate>Fri, 22 May 2020 00:00:00 +0000</pubDate>
       
       <guid>/2020/05/22/covid19/</guid>
-      <description> Covid19 NYC: \(R_{0}\) 
-Hi there…
- </description>
+      <description># NYC: \(R_{0}\)
+We are after the Reproductive number \(R_{0}\) for NYC. We want good reliable estimates given the available data.
+First a quick reminder of SIR model. The SIR epidemic model assumes a fix number \(N\) of individuals are (at each time \(t\)) divided into three groups \((S,I,R)\) thus its name. Where \(S=S(t)\) are the Susceptible individuals that are able to catch the virus, \(I=I(t)\) are the Infectives able to transmit the virus, and \(R=R(t)\) are the Removed individuals that either died or become immune to the virus.</description>
     </item>
     
     <item>

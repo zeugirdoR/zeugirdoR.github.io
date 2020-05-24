@@ -22,6 +22,11 @@
 
 
 
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
 <link rel="stylesheet" href="/css/fonts.css" media="all">
 <link rel="stylesheet" href="/css/main.css" media="all">
 
@@ -57,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">6 min read</span>
     
 
     <h1 class="article-title">covid19</h1>
@@ -107,6 +112,261 @@ decreasing (<span class="math inline">\(\delta I &lt; 0\)</span>) depending on <
 <p>Learn more about SIR.
 <strong>HINT</strong> Use the internet.</p>
 </div>
+<div id="get-some-data" class="section level1">
+<h1>Get some data</h1>
+<pre class="r"><code>library(ggplot2)
+nyc_url &lt;- &quot;https://github.com/nychealth/coronavirus-data/&quot;
+nyc_url_raw &lt;- paste(nyc_url,&quot;raw/master/&quot;,sep=&#39;&#39;)
+nyc_csv &lt;- &quot;case-hosp-death.csv&quot;
+nycdata &lt;- paste(nyc_url_raw,nyc_csv,sep=&#39;&#39;)
+
+# nycdata &lt;-
+#   &quot;https://github.com/nychealth/coronavirus-data/
+#          raw/master/
+#          case-hosp-death.csv&quot;
+
+hosp &lt;- read.csv(nycdata,header=T)
+
+# USAGE: gplot(SIR,SIR$t,SIR$S,ylab=&quot;Susceptibles&quot;)
+gplot &lt;- function(df,t,y,xlab=&quot;date&quot;,ylab=&quot;y&quot;) {
+    p &lt;- ggplot(df, aes(x=as.Date(t,&quot;%m/%d/%y&quot;), y=y)) +
+        geom_line( color=&quot;steelblue&quot;) +
+        geom_point() +
+        xlab(xlab) +
+        ylab(ylab)
+    p
+}
+
+# approx SIR.
+
+hosp[is.na(hosp)] &lt;- 0
+nc = hosp$C         # new cases
+nh = hosp$H        # new hospitalizations
+nd = hosp$DE      # new deaths
+
+N = sum(nc+nh+nd)       # total
+R = cumsum(nh+nd)-nh            # Removed
+I = nc                                   # Infectives
+I[which(I==0)] &lt;- 1     # regularize to 1.
+S = N - R - I                       # Susceptible
+
+SIR &lt;- data.frame(t=hosp$DATE,S=S,I=I,R=R)
+# add t=0
+R = c(0,R)
+S = c(N-1,S)
+I = c(1,I)
+ndays1 &lt;- length(I)
+nd &lt;- ndays1-1
+
+a = -diff(S)/(S*I)[1:nd]
+b = -(diff(S)+diff(I))/I[1:nd]
+b[1] &lt;- 1   # otherwise division by 0 below...
+R0 = (a/b)*S[1:nd]
+SIR$R0 &lt;- R0</code></pre>
+<div id="approximate-sir-from-the-available-data" class="section level2">
+<h2>Approximate SIR from the available data</h2>
+<p>The reported numbers of daily <em>cases</em>, <em>hospitalizations</em>,
+and <em>deaths</em> are clearly under representing the actual numbers
+for New York City. We ignore this as a first approximation.</p>
+<p>The total number <span class="math inline">\(N\)</span> for the population of NYC is also uncertain
+and obviously not constant. We make the drastic assumption that
+the total number of observations is <span class="math inline">\(N\)</span>. We start from here but
+will look at more realistic models later.</p>
+<div id="sir-plots" class="section level3">
+<h3><span class="math inline">\(S,I,R\)</span> plots:</h3>
+<p>See Figure <a href="#fig:Splot">1</a> showing the observed timeR0 = (a/b)*S[1:nd]</p>
+<p>series of <em>Susceptibles</em>.</p>
+<pre class="r"><code>gplot(SIR,SIR$t,SIR$S,ylab=&quot;Susceptibles&quot;)</code></pre>
+<div class="figure"><span id="fig:Splot"></span>
+<img src="/post/2020-05-22-covid19_files/figure-html/Splot-1.png" alt="Observed Susceptibles in NYC." width="672" />
+<p class="caption">
+Figure 1: Observed Susceptibles in NYC.
+</p>
+</div>
+<p>Figure <a href="#fig:Iplot">2</a> with the observed time series of <em>Infectives</em>.</p>
+<pre class="r"><code>gplot(SIR,SIR$t,SIR$I,ylab=&quot;Infectives&quot;)</code></pre>
+<div class="figure"><span id="fig:Iplot"></span>
+<img src="/post/2020-05-22-covid19_files/figure-html/Iplot-1.png" alt="Observed Infectives in NYC." width="672" />
+<p class="caption">
+Figure 2: Observed Infectives in NYC.
+</p>
+</div>
+<p>Figure <a href="#fig:Rplot">3</a> with the observed time series of <em>Removed</em>.</p>
+<pre class="r"><code>gplot(SIR,SIR$t,SIR$R,ylab=&quot;Removed&quot;)</code></pre>
+<div class="figure"><span id="fig:Rplot"></span>
+<img src="/post/2020-05-22-covid19_files/figure-html/Rplot-1.png" alt="Observed Removed in NYC." width="672" />
+<p class="caption">
+Figure 3: Observed Removed in NYC.
+</p>
+</div>
+<p>These plots follow the expected shapes for the SIR model.
+The smoothness of <span class="math inline">\(R\)</span> and also of <span class="math inline">\(S\)</span> to a lesser extend,
+is due to our drastic assumption that <span class="math inline">\(N\)</span> is the total number
+of observed individuals.</p>
+<p>The <em>noise</em> in the observations is clearly displayed by Figure
+<a href="#fig:Iplot">2</a> of the number of Infectives.
+A gamma plus noise model looks like a good fit. The <em>noise</em> seems
+to be non stationary however, low at the begining then large and
+finally a bit smaller at the end. An alternative could be to fit
+a gaussian process with a prior adapting to the observed noise.
+Will look at that later. Now just take a look at the raw
+observed time series of <span class="math inline">\(R_{0}\)</span>’s, varying with <span class="math inline">\(t\)</span>.</p>
+</div>
+</div>
+<div id="the-observed-time-series-of-r_0t" class="section level2">
+<h2>The observed time series of <span class="math inline">\(R_{0}(t)\)</span></h2>
+<p><span class="math inline">\(R_{0}(t)\)</span> is shown in Figure <a href="#fig:R0plot">4</a>.</p>
+<pre class="r"><code>gplot(SIR,SIR$t,SIR$R0,ylab=&quot;R_0&quot;) +
+  geom_hline(yintercept=1, col=&quot;red&quot;)</code></pre>
+<div class="figure"><span id="fig:R0plot"></span>
+<img src="/post/2020-05-22-covid19_files/figure-html/R0plot-1.png" alt="Observed $R_{0}$ in NYC." width="672" />
+<p class="caption">
+Figure 4: Observed <span class="math inline">\(R_{0}\)</span> in NYC.
+</p>
+</div>
+<div id="gaussian-process-smoothing-of-r_0" class="section level3">
+<h3>Gaussian Process smoothing of <span class="math inline">\(R_{0}\)</span></h3>
+<p>We start with a brute force fixing of the prior parameters to get
+a (over) heavy smoothing of the observed raw <span class="math inline">\(R_{0}(t)\)</span>.</p>
+<pre class="stan"><code>functions {
+  vector gp_pred_rng(real[] x2,
+                     vector y1, real[] x1,
+                     real alpha, real rho, real sigma, real delta) {
+    int N1 = rows(y1);
+    int N2 = size(x2);
+    vector[N2] f2;
+    {
+      matrix[N1, N1] K =   cov_exp_quad(x1, alpha, rho)
+                         + diag_matrix(rep_vector(square(sigma), N1));
+      matrix[N1, N1] L_K = cholesky_decompose(K);
+
+      vector[N1] L_K_div_y1 = mdivide_left_tri_low(L_K, y1);
+      vector[N1] K_div_y1 = mdivide_right_tri_low(L_K_div_y1&#39;, L_K)&#39;;
+      matrix[N1, N2] k_x1_x2 = cov_exp_quad(x1, x2, alpha, rho);
+      vector[N2] f2_mu = (k_x1_x2&#39; * K_div_y1);
+      matrix[N1, N2] v_pred = mdivide_left_tri_low(L_K, k_x1_x2);
+      matrix[N2, N2] cov_f2 =   cov_exp_quad(x2, alpha, rho) - v_pred&#39; * v_pred
+                              + diag_matrix(rep_vector(delta, N2));
+      f2 = multi_normal_rng(f2_mu, cov_f2);
+    }
+    return f2;
+  }
+}
+
+data {
+  int&lt;lower=1&gt; N;
+  real x[N];
+  vector[N] y;
+
+  int&lt;lower=1&gt; N_predict;
+  real x_predict[N_predict];
+
+  real&lt;lower=0&gt; rho;
+  real&lt;lower=0&gt; alpha;
+  real&lt;lower=0&gt; sigma;
+}
+
+transformed data {
+  matrix[N, N] cov =   cov_exp_quad(x, alpha, rho)
+                     + diag_matrix(rep_vector(1e-10, N));
+  matrix[N, N] L_cov = cholesky_decompose(cov);
+}
+
+parameters {}
+model {}
+
+generated quantities {
+  vector[N_predict] f_predict = gp_pred_rng(x_predict, y, x, alpha, rho, sigma, 1e-10);
+  vector[N_predict] y_predict;
+
+  for (n in 1:N_predict)
+    y_predict[n] = normal_rng(f_predict[n], sigma);
+}
+</code></pre>
+<p>The above provides the stan code for getting the predictions with the
+fitted gaussian process.</p>
+<pre class="r"><code>library(rstan)</code></pre>
+<pre><code>## Loading required package: StanHeaders</code></pre>
+<pre><code>## rstan (Version 2.19.3, GitRev: 2e1f913d3ca3)</code></pre>
+<pre><code>## For execution on a local, multicore CPU with excess RAM we recommend calling
+## options(mc.cores = parallel::detectCores()).
+## To avoid recompilation of unchanged Stan programs, we recommend calling
+## rstan_options(auto_write = TRUE)</code></pre>
+<pre class="r"><code>options(mc.cores = parallel::detectCores())
+#To avoid recompilation of unchanged Stan programs, we recommend calling
+rstan_options(auto_write = TRUE)
+
+
+N &lt;- nd  # number of days
+x = 1:N
+y = SIR$R0
+N_predict = 500
+x_predict = sort(runif(N_predict,1,N))
+
+pred_data &lt;- list(alpha=1.0, rho=5.0, sigma=2.0, N=N, x=x, y=y,
+                  N_predict=N_predict, x_predict=x_predict)
+pred_fit &lt;- sampling(predict_gauss, data=pred_data, iter=1000, warmup=0,
+                     chains=1, seed=5838298, refresh=1000, algorithm=&quot;Fixed_param&quot;)</code></pre>
+<pre><code>## 
+## SAMPLING FOR MODEL &#39;b42a8c10415d8faa784e9ab59a64657f&#39; NOW (CHAIN 1).
+## Chain 1: Iteration:   1 / 1000 [  0%]  (Sampling)
+## Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 0 seconds (Warm-up)
+## Chain 1:                12.7117 seconds (Sampling)
+## Chain 1:                12.7117 seconds (Total)
+## Chain 1:</code></pre>
+<pre class="r"><code>#source(&quot;gp_util.R&quot;)
+# Plot Gaussian process realizations
+plotgpfit &lt;- function(fit,x_predict,title,...) {
+    params &lt;- extract(fit)
+    I &lt;- length(params$f_predict[,1])
+
+  c_superfine &lt;- c(&quot;#8F272705&quot;)
+  plot(1, type=&quot;n&quot;, main=title,
+       xlim=c(1, N), ylim=c(-2, 6.8),...)
+  for (i in 1:I)
+      lines(x_predict, params$f_predict[i,], col=c_superfine)
+
+  abline(h=1)
+  meanf &lt;- colMeans(params$f_predict)
+  lines(x_predict,meanf)
+}</code></pre>
+<p>Figure <a href="#fig:postR0">5</a></p>
+<pre class="r"><code>plotgpfit(pred_fit,x_predict,&quot;Posterior: R0 NYC&quot;,
+          ylab=&quot;R_0&quot;, xlab=&quot;days after 02/29/2020&quot;)
+points(x=1:N,y=SIR$R0)</code></pre>
+<div class="figure"><span id="fig:postR0"></span>
+<img src="/post/2020-05-22-covid19_files/figure-html/postR0-1.png" alt="Posterior R0" width="672" />
+<p class="caption">
+Figure 5: Posterior R0
+</p>
+</div>
+<p>Let’s get some useful statistics from the predictions,</p>
+<pre class="r"><code>meanf &lt;- colMeans(extract(pred_fit)$f_predict)
+tpeak=round(x_predict[which(meanf==max(meanf))])
+SIR$t[tpeak]   # 3/14/20</code></pre>
+<pre><code>## [1] 03/14/2020
+## 85 Levels: 02/29/2020 03/01/2020 03/02/2020 03/03/2020 ... 05/23/2020</code></pre>
+</div>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary:</h2>
+<p>The posterior mean of <span class="math inline">\(R_{0}\)</span> shows that it took about two
+weeks from the first detected case for the epidemic to
+reach the peak on March 14.</p>
+<p>It took another two weeks to get back to <span class="math inline">\(R_{0}=1\)</span>
+and the <em>NY state Executive Order</em> to stay at home was
+only set on March 22, days <strong>after</strong> the epidemic starting
+dying out. These are very rough estimates as good only as
+the assumptions on which the model is based.</p>
+<div id="aknowledgement" class="section level3">
+<h3>Aknowledgement:</h3>
+<p>The GP stan code is <em>lifted</em> from,
+<a href="https://betanalpha.github.io/assets/case_studies/gp_part1/part1.html">Michael Betancourt</a></p>
+</div>
+</div>
+</div>
 
     </div>
   </article>
@@ -129,6 +389,18 @@ decreasing (<span class="math inline">\(\delta I &lt; 0\)</span>) depending on <
 
     </div>
     
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
 
     
 <script src="/js/math-code.js"></script>

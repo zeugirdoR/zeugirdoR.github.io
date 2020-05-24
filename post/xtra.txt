@@ -1,0 +1,11 @@
+
+Finally, Figure \@ref(fig:R0post1) shows the smoothed out $R_{0}(t)$.
+
+```{r R0post1, fig.cap="Posterior R0", tidy=FALSE}
+ggplot()+
+  geom_point(data=SIR,aes(x=t,y=R0)) +
+  geom_line(data=dfm,aes(x=t,y=mf))+theme(axis.text.x=element_blank())+
+  geom_abline(intercept = 1,slope = 0,col="red")+
+  ggtitle("NYC: posterior R0 with rho=5,sigma=2")
+
+```

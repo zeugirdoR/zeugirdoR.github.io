@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chile on zeugirdoR&#39;s site</title>
+    <link>/categories/chile/</link>
+    <description>Recent content in Chile on zeugirdoR&#39;s site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 30 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/chile/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ChileR0</title>
+      <link>/2020/05/30/chiler0/</link>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/05/30/chiler0/</guid>
+      <description>New thought:  Estimate the Infected at time t, not just with the new infections observed at time t but add the infections that are observed the following few ( less than 7 or 8 days) days. Let this lead be another parameter. — Idea!
+ Data from Chile: library(tidyverse) library(zoo) raw_tibble &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto5/TotalesNacionales_T.csv&amp;quot;) extract just what’s needed with the function get_sir
+sum_ahead &amp;lt;- function(v,lead=1) { if (lead &amp;gt; 0) { df &amp;lt;- tibble(V1=v) df$V2 &amp;lt;- rollsum(lead(df$V1), lead, align=&amp;quot;left&amp;quot;, fill = NA) + df$V1 V3 &amp;lt;- df[[&amp;#39;V2&amp;#39;]] df1 &amp;lt;- df %&amp;gt;% filter(is.</description>
+    </item>
+    
+  </channel>
+</rss>

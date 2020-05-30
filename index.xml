@@ -12,6 +12,17 @@
     
     
     <item>
+      <title>ChileR0</title>
+      <link>/2020/05/30/chiler0/</link>
+      <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/05/30/chiler0/</guid>
+      <description>New thought:  Estimate the Infected at time t, not just with the new infections observed at time t but add the infections that are observed the following few ( less than 7 or 8 days) days. Let this lead be another parameter. — Idea!
+ Data from Chile: library(tidyverse) library(zoo) raw_tibble &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto5/TotalesNacionales_T.csv&amp;quot;) extract just what’s needed with the function get_sir
+sum_ahead &amp;lt;- function(v,lead=1) { if (lead &amp;gt; 0) { df &amp;lt;- tibble(V1=v) df$V2 &amp;lt;- rollsum(lead(df$V1), lead, align=&amp;quot;left&amp;quot;, fill = NA) + df$V1 V3 &amp;lt;- df[[&amp;#39;V2&amp;#39;]] df1 &amp;lt;- df %&amp;gt;% filter(is.</description>
+    </item>
+    
+    <item>
       <title>Chilecovid19</title>
       <link>/2020/05/29/chilecovid19/</link>
       <pubDate>Fri, 29 May 2020 00:00:00 +0000</pubDate>
@@ -126,9 +137,9 @@ summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/1/01/01/covid19-chile/</guid>
-      <description>--- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- --- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- 
+      <description>--- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- --- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- --- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- 
 Get \(R_{0}\) First we need to provide a .csv file with data.
-Data from Chile: library(tidyverse) ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ── ## ✔ ggplot2 3.3.0 ✔ purrr 0.3.4 ## ✔ tibble 3.</description>
+Data from Chile: library(tidyverse) ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.</description>
     </item>
     
     <item>

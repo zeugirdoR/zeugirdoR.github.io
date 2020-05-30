@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.70.0" />
+
+
+<title>ChileR0 - zeugirdoR&#39;s site</title>
+<meta property="og:title" content="ChileR0 - zeugirdoR&#39;s site">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/urhere0.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://zeugirdoR.github.com/">GitHub</a></li>
+    
+    <li><a href="https://omega0.xyz/omega8008">Omega0.xyz</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">ChileR0</h1>
+
+    
+    <span class="article-date">2020-05-30</span>
+    
+
+    <div class="article-content">
+      
+
+
+<p><a href="https://omega0.xyz/omega8008/"><img src="/images/urhere.png" alt="urhere.png" /></a></p>
+<div id="new-thought" class="section level1">
+<h1>New thought:</h1>
+<blockquote>
+<p>Estimate the Infected at time t, not just with
+the new infections observed at time t but
+add the infections that are observed the following
+few ( less than 7 or 8 days) days. Let this
+<em>lead</em> be another parameter.
+— Idea!</p>
+</blockquote>
+<div id="data-from-chile" class="section level2">
+<h2>Data from Chile:</h2>
+<pre class="r"><code>library(tidyverse)
+library(zoo)
+raw_tibble &lt;- read_csv(&quot;https://raw.githubusercontent.com/MinCiencia/Datos-COVID19/master/output/producto5/TotalesNacionales_T.csv&quot;)</code></pre>
+<p>extract just what’s needed with the function <em>get_sir</em></p>
+<pre class="r"><code>sum_ahead &lt;- function(v,lead=1) {
+    if (lead &gt; 0) {
+        df &lt;- tibble(V1=v)
+        df$V2 &lt;- rollsum(lead(df$V1), lead, align=&quot;left&quot;, fill = NA) + df$V1
+        V3 &lt;- df[[&#39;V2&#39;]]
+        df1 &lt;- df %&gt;% filter(is.na(V2)) %&gt;% mutate(V2=rev(cumsum(rev(V1))))
+        V3[is.na(V3)] &lt;- df1$V2
+    }
+    else V3 &lt;- v
+    V3
+}
+
+get_sir &lt;- function(tib,newI,newD,lead=0) {
+   nI &lt;- tib[[newI]]
+   nD &lt;- tib[[newD]]
+   R &lt;- cumsum(nI+nD)
+   n_days &lt;- length(R)
+   I &lt;- sum_ahead(nI,lead)
+   N_tot &lt;- R[n_days] + I[n_days]
+   S &lt;- N_tot - I - R
+   R0 &lt;- 1 + diff(c(0,I))/diff(c(1,R))
+   sir &lt;- tibble(t=as.Date(tib[[1]],format=&quot;%Y-%m-%d&quot;),
+                 S=S, I=I, R=R, R0=R0)
+   sir
+}</code></pre>
+<p>Let’s try it,</p>
+<pre class="r"><code>rt &lt;- tibble(t=raw_tibble[[1]], newI=raw_tibble[[8]],
+             newD=diff(c(0,raw_tibble[[5]])))
+pR0 &lt;- function(lead=0,df=15,tib=rt) {
+  sir &lt;- get_sir(tib,&#39;newI&#39;,&#39;newD&#39;,lead)
+  R0 &lt;- sir$R0
+  R0[R0==Inf | is.nan(R0)] &lt;- 1   # regularize the Inf
+  n_days &lt;- length(R0)
+  plot(R0,type=&quot;l&quot;,xlab=&quot;days after 2020-03-03&quot;,
+        main=paste(&quot;Chile: R0, lead=&quot;,lead,&quot; smoothed with df=&quot;,df))
+  abline(h=1,col=&quot;red&quot;)
+  lines(smooth.spline(x=1:n_days,y=R0,df=15),col=&quot;blue&quot;)
+}</code></pre>
+<p>first with no <em>lead</em></p>
+<pre class="r"><code>pR0()</code></pre>
+<p><img src="/post/2020-05-30-chiler0_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+With a week of <em>lead</em>,</p>
+<pre class="r"><code>pR0(lead=7)</code></pre>
+<p><img src="/post/2020-05-30-chiler0_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+With a <em>lead</em> of four days,</p>
+<pre class="r"><code>pR0(lead=4)</code></pre>
+<p><img src="/post/2020-05-30-chiler0_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>and just two days,</p>
+<pre class="r"><code>pR0(lead=2)</code></pre>
+<p><img src="/post/2020-05-30-chiler0_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>When we estimate the <em>Infectives</em> at time <span class="math inline">\(t\)</span> by accumulating
+the new observed cases a <em>lead</em> number of days ahead,
+we observe that the bump the first month
+and then two smaller bumps the last month remain stable
+across changes in the <em>lead</em> parameter.</p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

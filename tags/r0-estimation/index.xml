@@ -39,9 +39,7 @@ The Removed at time \(t\) will include all of the observed deaths up to time \(t
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/1/01/01/covid19-chile/</guid>
-      <description>--- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- --- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- --- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- 
-Get \(R_{0}\) First we need to provide a .csv file with data.
-Data from Chile: library(tidyverse) ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.</description>
+      <description>--- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- --- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- --- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] --- --- title: covid19 author: Carlos C. Rodriguez date: &#39;&#39; slug: covid19-chile categories: [&#34;R&#34;] tags: [&#34;Rmarkdown&#34;,&#34;blogdown&#34;,&#34;R0 estimation&#34;] ---</description>
     </item>
     
   </channel>

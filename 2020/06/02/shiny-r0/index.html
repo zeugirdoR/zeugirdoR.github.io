@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.70.0" />
+
+
+<title>Shiny R0 - zeugirdoR&#39;s site</title>
+<meta property="og:title" content="Shiny R0 - zeugirdoR&#39;s site">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/urhere0.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://zeugirdoR.github.com/">GitHub</a></li>
+    
+    <li><a href="https://omega0.xyz/omega8008">Omega0.xyz</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">Shiny R0</h1>
+
+    
+    <span class="article-date">2020-06-02</span>
+    
+
+    <div class="article-content">
+      
+
+
+<p><a href="https://omega0.xyz/omega8008/"><img src="https://omega0.xyz/urhere.png" alt="urhere.png" /></a></p>
+<p>Data from:</p>
+<p>“<a href="https://covid.ourworldindata.org/data/owid-covid-data.csv" class="uri">https://covid.ourworldindata.org/data/owid-covid-data.csv</a>”</p>
+<p>Get R0 by country,</p>
+<p><div class="form-group shiny-input-container">
+<label class="control-label" for="country">Country</label>
+<input id="country" type="text" class="form-control" value="Chile"/>
+</div><img src="/post/2020-06-02-shiny-r0_files/figure-html/plotcountry-1.png" width="672" /></p>
+<div id="section-mean-auc-of-smooth-r0" class="section level2">
+<h2>Mean AUC of smooth R0</h2>
+<p>Mean Area Under the smooth (blue) Curve.<br />
+This is just a robust overall average of R0.<br />
+Here is the list of all the countries ranked by it:</p>
+<pre><code>## # A tibble: 212 x 3
+##     rev_rank country                          mean_AUR0
+##        &lt;int&gt; &lt;chr&gt;                                &lt;dbl&gt;
+##   1      212 Democratic Republic of Congo      -0.479  
+##   2      211 Argentina                          0.00586
+##   3      210 Mongolia                           0.0980 
+##   4      209 Sao Tome and Principe              0.493  
+##   5      208 Faeroe Islands                     0.623  
+##   6      207 Equatorial Guinea                  0.670  
+##   7      206 Isle of Man                        0.729  
+##   8      205 Vietnam                            0.731  
+##   9      204 Brunei                             0.743  
+##  10      203 Zambia                             0.749  
+##  11      202 Niger                              0.756  
+##  12      201 Cambodia                           0.774  
+##  13      200 International                      0.796  
+##  14      199 Bermuda                            0.806  
+##  15      198 Finland                            0.827  
+##  16      197 Gibraltar                          0.840  
+##  17      196 Jersey                             0.845  
+##  18      195 Benin                              0.851  
+##  19      194 Congo                              0.866  
+##  20      193 Tanzania                           0.900  
+##  21      192 Guyana                             0.907  
+##  22      191 Guam                               0.910  
+##  23      190 Taiwan                             0.912  
+##  24      189 Tunisia                            0.913  
+##  25      188 Saint Vincent and the Grenadines   0.918  
+##  26      187 Cayman Islands                     0.932  
+##  27      186 Syria                              0.932  
+##  28      185 Curacao                            0.940  
+##  29      184 Swaziland                          0.941  
+##  30      183 Trinidad and Tobago                0.947  
+##  31      182 French Polynesia                   0.950  
+##  32      181 Rwanda                             0.952  
+##  33      180 Gambia                             0.956  
+##  34      179 Uruguay                            0.961  
+##  35      178 Fiji                               0.967  
+##  36      177 Liechtenstein                      0.968  
+##  37      176 Myanmar                            0.968  
+##  38      175 Antigua and Barbuda                0.968  
+##  39      174 Bhutan                             0.973  
+##  40      173 San Marino                         0.975  
+##  41      172 Bahamas                            0.982  
+##  42      171 Malta                              0.984  
+##  43      170 Greenland                          0.987  
+##  44      169 Monaco                             0.989  
+##  45      168 Timor                              0.990  
+##  46      167 Sudan                              0.992  
+##  47      166 Dominica                           0.994  
+##  48      165 Andorra                            0.994  
+##  49      164 Barbados                           0.998  
+##  50      163 Vatican                            1.00   
+##  51      162 Hong Kong                          1.00   
+##  52      161 Grenada                            1.00   
+##  53      160 Papua New Guinea                   1.00   
+##  54      159 Falkland Islands                   1.00   
+##  55      158 Lesotho                            1      
+##  56      157 Montserrat                         1.     
+##  57      156 Bonaire Sint Eustatius and Saba    1.01   
+##  58      155 Namibia                            1.01   
+##  59      154 Latvia                             1.02   
+##  60      153 Saint Lucia                        1.02   
+##  61      152 New Caledonia                      1.02   
+##  62      151 Laos                               1.02   
+##  63      150 Western Sahara                     1.02   
+##  64      149 Kosovo                             1.02   
+##  65      148 Anguilla                           1.02   
+##  66      147 Iceland                            1.02   
+##  67      146 British Virgin Islands             1.02   
+##  68      145 Guernsey                           1.03   
+##  69      144 Nicaragua                          1.03   
+##  70      143 Botswana                           1.03   
+##  71      142 Seychelles                         1.03   
+##  72      141 Turks and Caicos Islands           1.03   
+##  73      140 Comoros                            1.03   
+##  74      139 Belize                             1.03   
+##  75      138 Greece                             1.03   
+##  76      137 Sint Maarten (Dutch part)          1.04   
+##  77      136 Eritrea                            1.04   
+##  78      135 United States Virgin Islands       1.05   
+##  79      134 Panama                             1.05   
+##  80      133 Estonia                            1.06   
+##  81      132 Saint Kitts and Nevis              1.07   
+##  82      131 Northern Mariana Islands           1.08   
+##  83      130 New Zealand                        1.09   
+##  84      129 Dominican Republic                 1.10   
+##  85      128 Chad                               1.10   
+##  86      127 Angola                             1.10   
+##  87      126 Zimbabwe                           1.10   
+##  88      125 Gabon                              1.11   
+##  89      124 Burundi                            1.14   
+##  90      123 Bahrain                            1.14   
+##  91      122 Mauritius                          1.15   
+##  92      121 Togo                               1.17   
+##  93      120 Slovenia                           1.17   
+##  94      119 Jamaica                            1.19   
+##  95      118 Aruba                              1.19   
+##  96      117 Yemen                              1.19   
+##  97      116 Azerbaijan                         1.19   
+##  98      115 Italy                              1.20   
+##  99      114 Lithuania                          1.20   
+## 100      113 Croatia                            1.20   
+## 101      112 Senegal                            1.21   
+## 102      111 Libya                              1.21   
+## 103      110 Macedonia                          1.22   
+## 104      109 Slovakia                           1.22   
+## 105      108 Japan                              1.22   
+## 106      107 Palestine                          1.22   
+## 107      106 Australia                          1.23   
+## 108      105 Morocco                            1.23   
+## 109      104 Guinea                             1.23   
+## 110      103 Norway                             1.24   
+## 111      102 Kyrgyzstan                         1.24   
+## 112      101 United Arab Emirates               1.24   
+## 113      100 Mauritania                         1.24   
+## 114       99 Czech Republic                     1.25   
+## 115       98 Bosnia and Herzegovina             1.26   
+## 116       97 Georgia                            1.27   
+## 117       96 Iraq                               1.27   
+## 118       95 Costa Rica                         1.27   
+## 119       94 Cyprus                             1.27   
+## 120       93 Mozambique                         1.27   
+## 121       92 Suriname                           1.27   
+## 122       91 Kuwait                             1.28   
+## 123       90 Oman                               1.28   
+## 124       89 Liberia                            1.28   
+## 125       88 Cape Verde                         1.28   
+## 126       87 Thailand                           1.29   
+## 127       86 Egypt                              1.29   
+## 128       85 Algeria                            1.29   
+## 129       84 Afghanistan                        1.30   
+## 130       83 Malaysia                           1.30   
+## 131       82 Central African Republic           1.31   
+## 132       81 Hungary                            1.31   
+## 133       80 Jordan                             1.31   
+## 134       79 Mexico                             1.32   
+## 135       78 Somalia                            1.32   
+## 136       77 Nigeria                            1.33   
+## 137       76 Singapore                          1.33   
+## 138       75 Cuba                               1.33   
+## 139       74 Serbia                             1.34   
+## 140       73 Puerto Rico                        1.34   
+## 141       72 Montenegro                         1.37   
+## 142       71 Cote d&#39;Ivoire                      1.37   
+## 143       70 Luxembourg                         1.37   
+## 144       69 Armenia                            1.37   
+## 145       68 Nepal                              1.38   
+## 146       67 Ireland                            1.39   
+## 147       66 Madagascar                         1.39   
+## 148       65 Mali                               1.40   
+## 149       64 Kenya                              1.41   
+## 150       63 Sri Lanka                          1.42   
+## 151       62 Russia                             1.42   
+## 152       61 Ghana                              1.42   
+## 153       60 Austria                            1.42   
+## 154       59 Sierra Leone                       1.43   
+## 155       58 Indonesia                          1.43   
+## 156       57 Guatemala                          1.43   
+## 157       56 Lebanon                            1.44   
+## 158       55 South Africa                       1.44   
+## 159       54 Netherlands                        1.45   
+## 160       53 Canada                             1.47   
+## 161       52 France                             1.47   
+## 162       51 Romania                            1.48   
+## 163       50 Ethiopia                           1.48   
+## 164       49 Germany                            1.49   
+## 165       48 Moldova                            1.49   
+## 166       47 India                              1.49   
+## 167       46 Bulgaria                           1.49   
+## 168       45 Burkina Faso                       1.50   
+## 169       44 Pakistan                           1.51   
+## 170       43 El Salvador                        1.51   
+## 171       42 Saudi Arabia                       1.52   
+## 172       41 Albania                            1.52   
+## 173       40 Brazil                             1.53   
+## 174       39 Israel                             1.53   
+## 175       38 Iran                               1.55   
+## 176       37 Poland                             1.55   
+## 177       36 Kazakhstan                         1.56   
+## 178       35 United Kingdom                     1.56   
+## 179       34 China                              1.57   
+## 180       33 Paraguay                           1.57   
+## 181       32 Colombia                           1.58   
+## 182       31 Spain                              1.62   
+## 183       30 Belgium                            1.66   
+## 184       29 Maldives                           1.68   
+## 185       28 Haiti                              1.68   
+## 186       27 Philippines                        1.72   
+## 187       26 Tajikistan                         1.75   
+## 188       25 Uzbekistan                         1.76   
+## 189       24 United States                      1.76   
+## 190       23 South Sudan                        1.77   
+## 191       22 Venezuela                          1.77   
+## 192       21 Ukraine                            1.78   
+## 193       20 Uganda                             1.79   
+## 194       19 Bolivia                            1.84   
+## 195       18 Portugal                           1.84   
+## 196       17 Honduras                           1.86   
+## 197       16 Ecuador                            1.90   
+## 198       15 Chile                              1.91   
+## 199       14 Bangladesh                         1.95   
+## 200       13 Peru                               1.96   
+## 201       12 World                              1.98   
+## 202       11 Sweden                             2.00   
+## 203       10 Guinea-Bissau                      2.02   
+## 204        9 Cameroon                           2.02   
+## 205        8 Denmark                            2.19   
+## 206        7 Malawi                             2.20   
+## 207        6 Djibouti                           2.30   
+## 208        5 Qatar                              2.32   
+## 209        4 Turkey                             3.39   
+## 210        3 Switzerland                        3.94   
+## 211        2 Belarus                            3.99   
+## 212        1 South Korea                        4.59</code></pre>
+</div>
+<div id="section-here-is-the-code-httpsomega0.xyzowid1.rmd" class="section level2">
+<h2>Here is the code: (<a href="https://omega0.xyz/owid1.Rmd" class="uri">https://omega0.xyz/owid1.Rmd</a>)</h2>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

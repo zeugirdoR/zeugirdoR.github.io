@@ -12,6 +12,21 @@
     
     
     <item>
+      <title>Shiny R0</title>
+      <link>/2020/06/02/shiny-r0/</link>
+      <pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/06/02/shiny-r0/</guid>
+      <description>Data from:
+“https://covid.ourworldindata.org/data/owid-covid-data.csv”
+Get R0 by country,
+Country Mean AUC of smooth R0 Mean Area Under the smooth (blue) Curve.
+This is just a robust overall average of R0.
+Here is the list of all the countries ranked by it:
+## # A tibble: 212 x 3 ## rev_rank country mean_AUR0 ## &amp;lt;int&amp;gt; &amp;lt;chr&amp;gt; &amp;lt;dbl&amp;gt; ## 1 212 Democratic Republic of Congo -0.479 ## 2 211 Argentina 0.00586 ## 3 210 Mongolia 0.</description>
+    </item>
+    
+    <item>
       <title>ChileR0</title>
       <link>/2020/05/30/chiler0/</link>
       <pubDate>Sat, 30 May 2020 00:00:00 +0000</pubDate>
